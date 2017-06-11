@@ -18,6 +18,7 @@ Enemy.prototype.update = function(dt) {
     var num = Math.floor(Math.random()*8);
     this.speed = num * STONE_WIDTH * dt;
     this.x += this.speed;
+    // this.y += Math.random() * STONE_WIDTH;
 
     if (this.x > 505) {
         this.x = -STONE_WIDTH;
@@ -52,8 +53,10 @@ var Player = function() {
 }
 
 Player.prototype.update = function() {
-    
-    
+    //检测玩家到达河边，就恢复原位继续游戏
+    // if (this.y === 400 - 4*this.speedy) {
+    //     this.y = 400;
+    // }
 };
 
 Player.prototype.render = function() {
