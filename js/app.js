@@ -32,7 +32,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Enemy.prototype.checkCollisions = function() {
+Player.prototype.checkCollisions = function() {
     if (this.y == Player.y) {
         alert('撞到了！！！');
     }
@@ -53,6 +53,7 @@ Player.prototype.update = function() {
     // if (this.y === 400 - 4*this.speedy) {
     //     this.y = 400;
     // }
+
 };
 
 Player.prototype.render = function() {
