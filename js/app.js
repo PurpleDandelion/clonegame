@@ -32,9 +32,13 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.checkCollisions = function() {
-    if (this.y == Player.y) {
-        alert('撞到了！！！');
+//碰撞检测，在一定范围差类表示撞到;撞到之后，玩家重置
+Enemy.prototype.checkCollisions = function() {
+    let diffx = this.x - player.x;
+    let diffy = this.y - player.y;
+
+    if (Math.abs(diffx) < 50 && Math.abs(diffy) < 41 ) {
+        player.y = 372;
     }
 };
 
@@ -43,7 +47,7 @@ Player.prototype.checkCollisions = function() {
 var Player = function() {
     this.sprite = 'images/char-pink-girl.png';
     this.x = 202;
-    this.y = 400;
+    this.y = 372;
     this.speedx = 101;
     this.speedy = 83;
 }
@@ -74,7 +78,7 @@ Player.prototype.handleInput = function(keyCode) {
             break;
         case 'up':
             diff = this.y - this.speedy;
-            border = 400 - 4*this.speedy;
+            border = 372 - 4*this.speedy;
             if (diff >= border) {
                 this.y = diff;
             }
@@ -88,7 +92,7 @@ Player.prototype.handleInput = function(keyCode) {
             break;
         case 'down':
             diff = this.y + this.speedy;
-            border = 400;
+            border = 372;
             if (diff <= border) {
                 this.y = diff;
             }
@@ -96,7 +100,6 @@ Player.prototype.handleInput = function(keyCode) {
         default:
             break;
     }
-    console.log(this.y);
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
