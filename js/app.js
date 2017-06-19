@@ -14,7 +14,6 @@ var Enemy = function() {
 // 参数: dt ，表示时间间隙
 Enemy.prototype.update = function(dt) {
     // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
-    // 都是以同样的速度运行的
     var num = Math.floor(Math.random()*8);
     this.speed = num * STONE_WIDTH * dt;
     this.x += this.speed;
@@ -50,14 +49,31 @@ var Player = function() {
     this.y = 372;
     this.speedx = 101;
     this.speedy = 83;
+    this.timer = null;
+    this.ismove = true;
+}
+
+Player.prototype.initPos = function () {
+    this.y = 372;
+    this.x = 202;
 }
 
 Player.prototype.update = function() {
     //检测玩家到达河边，就恢复原位继续游戏
-    // if (this.y === 400 - 4*this.speedy) {
-    //     this.y = 400;
-    // }
-
+    clearTimeout(this.timer);
+    let _this = this;
+    if (_this.y == 40) {
+        _this.ismove = false;
+    console.log(this.y);
+    console.log(this.ismove);
+        
+        this.timer = setTimeout(function () {
+            console.log(_this.y);
+                _this.initPos();
+                _this.ismove = true;
+                _this.render();
+        }, 100);
+    }
 };
 
 Player.prototype.render = function() {
@@ -65,6 +81,12 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(keyCode) {
+    console.log(this.ismove);
+    console.log(this.y);
+
+    if (!this.ismove && this.y < 0) {
+        return;
+    }
     //差值
     var diff = 0;
     var border  = 0;
@@ -79,9 +101,9 @@ Player.prototype.handleInput = function(keyCode) {
         case 'up':
             diff = this.y - this.speedy;
             border = 372 - 4*this.speedy;
-            if (diff >= border) {
+            // if (diff >= border) {
                 this.y = diff;
-            }
+            // }
             break;
         case 'right':
             diff = this.x + this.speedx;
@@ -107,12 +129,16 @@ Player.prototype.handleInput = function(keyCode) {
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
 // 把玩家对象放进一个叫 player 的变量里面
 var allEnemies = [],
-    enemyCount = 3;
+    enemyCount = 0;
 const STONE_WIDTH = 101;
 const STONE_HEIGHT = 83;
 for (let i = 0; i < enemyCount; i++) {
     let enemy = new Enemy();
-    enemy.y += i*STONE_HEIGHT;
+    if (i > 3) {
+        enemy.y += i*STONE_HEIGHT;
+    } else {
+        enemy.y += Math.floor(i/2)*STONE_HEIGHT;
+    }
     enemy.x += Math.floor(Math.random()*4 + 1) * STONE_WIDTH;
     enemy.speed *= i;
     enemy.x += enemy.speed;
