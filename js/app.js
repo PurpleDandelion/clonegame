@@ -15,10 +15,8 @@ var Enemy = function() {
 Enemy.prototype.update = function(dt) {
     // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
     var num = Math.floor(Math.random()*8);
-    this.speed = num * STONE_WIDTH * dt;
-    this.x += this.speed;
-    // this.y += Math.random() * STONE_WIDTH;
-
+    // this.speed = num * STONE_WIDTH * dt;
+    this.x += this.speed * dt;
     if (this.x > 505) {
         this.x = -STONE_WIDTH;
         //每次虫子回到0重新出发的时候，height可变 (0~3)*83
@@ -62,7 +60,7 @@ Player.prototype.update = function() {
     //检测玩家到达河边，就恢复原位继续游戏
     clearTimeout(this.timer);
     let _this = this;
-    if (_this.y == 40) {
+    if (_this.y < 0) {
         _this.ismove = false;
     console.log(this.y);
     console.log(this.ismove);
@@ -72,7 +70,7 @@ Player.prototype.update = function() {
                 _this.initPos();
                 _this.ismove = true;
                 _this.render();
-        }, 100);
+        }, 19);
     }
 };
 
@@ -129,7 +127,7 @@ Player.prototype.handleInput = function(keyCode) {
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
 // 把玩家对象放进一个叫 player 的变量里面
 var allEnemies = [],
-    enemyCount = 0;
+    enemyCount = 5;
 const STONE_WIDTH = 101;
 const STONE_HEIGHT = 83;
 for (let i = 0; i < enemyCount; i++) {
@@ -140,7 +138,7 @@ for (let i = 0; i < enemyCount; i++) {
         enemy.y += Math.floor(i/2)*STONE_HEIGHT;
     }
     enemy.x += Math.floor(Math.random()*4 + 1) * STONE_WIDTH;
-    enemy.speed *= i;
+    enemy.speed *= (i + 1)/1.2;
     enemy.x += enemy.speed;
     allEnemies.push(enemy);
 }
