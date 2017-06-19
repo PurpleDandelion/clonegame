@@ -131,8 +131,8 @@ const STONE_WIDTH = 101;
 //初始化虫子的位置
 for (let i = 0; i < enemyCount; i++) {
     let enemy = new Enemy(0, 60, 101);
-    // if (i > 3) {
-        enemy.y += i*STONE_HEIGHT;
+    // if (i < 3) {
+        // enemy.y += i*STONE_HEIGHT;
     // } else {
         // enemy.y += Math.floor(i/2)*STONE_HEIGHT;
     // }
