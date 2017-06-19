@@ -1,13 +1,13 @@
 // 这是我们的玩家要躲避的敌人 
-var Enemy = function() {
+var Enemy = function(x, y, speed) {
     // 要应用到每个敌人的实例的变量写在这里
     // 我们已经提供了一个来帮助你实现更多
 
     // 敌人的图片或者雪碧图，用一个我们提供的工具函数来轻松的加载文件
     this.sprite = 'images/enemy-bug.png';
-    this.x = 0;
-    this.y = 60;
-    this.speed = 101;
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
 };
 
 // 此为游戏必须的函数，用来更新敌人的位置
@@ -15,7 +15,6 @@ var Enemy = function() {
 Enemy.prototype.update = function(dt) {
     // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
     var num = Math.floor(Math.random()*8);
-    // this.speed = num * STONE_WIDTH * dt;
     this.x += this.speed * dt;
     if (this.x > 505) {
         this.x = -STONE_WIDTH;
@@ -35,25 +34,25 @@ Enemy.prototype.checkCollisions = function() {
     let diffy = this.y - player.y;
 
     if (Math.abs(diffx) < 50 && Math.abs(diffy) < 41 ) {
-        player.y = 405;
+        player.y = PLAYER_INIT_POSY;
     }
 };
 
 // 现在实现你自己的玩家类
 // 这个类需要一个 update() 函数， render() 函数和一个 handleInput()函数
-var Player = function() {
+var Player = function(x, y, sx, sy) {
     this.sprite = 'images/char-pink-girl.png';
-    this.x = 202;
-    this.y = 405;
-    this.speedx = 101;
-    this.speedy = 83;
+    this.x = x;
+    this.y = y;
+    this.speedx = sx;
+    this.speedy = sy;
     this.timer = null;
     this.ismove = true;
 }
 
 Player.prototype.initPos = function () {
-    this.y = 405;
-    this.x = 202;
+    this.y = PLAYER_INIT_POSY;
+    this.x = PLAYER_INIT_POSX;
 }
 
 Player.prototype.update = function() {
@@ -62,11 +61,7 @@ Player.prototype.update = function() {
     let _this = this;
     if (_this.y < 0) {
         _this.ismove = false;
-    console.log(this.y);
-    console.log(this.ismove);
-        
         this.timer = setTimeout(function () {
-            console.log(_this.y);
                 _this.initPos();
                 _this.ismove = true;
                 _this.render();
@@ -91,28 +86,28 @@ Player.prototype.handleInput = function(keyCode) {
     switch (keyCode) {
         case 'left':
             diff = this.x - this.speedx;
-            border = 202 - 2*this.speedx;
+            border = PLAYER_INIT_POSX - 2*this.speedx;
             if (diff >= border) {
                 this.x = diff;
             }
             break;
         case 'up':
             diff = this.y - this.speedy;
-            border = 405 - 4*this.speedy;
+            border = PLAYER_INIT_POSY - 4*this.speedy;
             // if (diff >= border) {
                 this.y = diff;
             // }
             break;
         case 'right':
             diff = this.x + this.speedx;
-            border= 202 + 2*this.speedx;
+            border= PLAYER_INIT_POSX + 2*this.speedx;
             if (diff <= border) {
                 this.x = diff;
             }
             break;
         case 'down':
             diff = this.y + this.speedy;
-            border = 405;
+            border = PLAYER_INIT_POSY;
             if (diff <= border) {
                 this.y = diff;
             }
@@ -128,22 +123,26 @@ Player.prototype.handleInput = function(keyCode) {
 // 把玩家对象放进一个叫 player 的变量里面
 var allEnemies = [],
     enemyCount = 5;
+//定义石块的宽度和高度以及玩家的初始位置坐标x和y
 const STONE_WIDTH = 101;
-const STONE_HEIGHT = 83;
+      STONE_HEIGHT = 83,
+      PLAYER_INIT_POSX = 202,
+      PLAYER_INIT_POSY = 405;
+//初始化虫子的位置
 for (let i = 0; i < enemyCount; i++) {
-    let enemy = new Enemy();
-    if (i > 3) {
+    let enemy = new Enemy(0, 60, 101);
+    // if (i > 3) {
         enemy.y += i*STONE_HEIGHT;
-    } else {
-        enemy.y += Math.floor(i/2)*STONE_HEIGHT;
-    }
+    // } else {
+        // enemy.y += Math.floor(i/2)*STONE_HEIGHT;
+    // }
     enemy.x += Math.floor(Math.random()*4 + 1) * STONE_WIDTH;
     enemy.speed *= (i + 1)/1.2;
     enemy.x += enemy.speed;
     allEnemies.push(enemy);
 }
 
-var player = new Player();
+var player = new Player(PLAYER_INIT_POSX, PLAYER_INIT_POSY, STONE_WIDTH, STONE_HEIGHT);
 
 
 // 这段代码监听游戏玩家的键盘点击事件并且代表将按键的关键数字送到 Play.handleInput()
