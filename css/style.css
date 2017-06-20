@@ -23,12 +23,17 @@ body {
 	float: left;
 }
 
+.none {
+	display: none;
+}
+
 div#handle {
 	width: 320px;
-    height: 555px;
+    height: 535px;
     background-color: #f9f6f6;
     display: inline-block;
     margin-left: 10px;
+    margin-bottom: 20px;
 }
 
 .btn {
@@ -40,6 +45,7 @@ div#handle {
     padding: 6px 12px;
     font-size: 14px;
     border: 1px solid transparent;
+    cursor: pointer;
 }
 
 #handlebtn {

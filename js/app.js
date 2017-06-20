@@ -29,12 +29,11 @@ Enemy.prototype.render = function() {
 };
 
 //碰撞检测，在一定范围差类表示撞到;撞到之后，玩家重置
-Enemy.prototype.checkCollisions = function() {
+Enemy.prototype.checkCollisions = function(dt) {
     let diffx = this.x - player.x;
     let diffy = this.y - player.y;
 
     if (Math.abs(diffx) < 50 && Math.abs(diffy) < 41 ) {
-        player.initPos();
         //同时，失去一颗生命力
         var lifediv = document.getElementById('life');
         var hearts = lifediv.getElementsByTagName('div');
@@ -44,11 +43,14 @@ Enemy.prototype.checkCollisions = function() {
         } else {
             lifediv.removeChild(hearts[hearts.length-1]);
             if (hearts.length < 1) {
-                alert('游戏结束，本局成绩是' + totalScore);
                 isRunMain = false;
                 document.removeEventListener('keyup', playerKeyUp);
+                alert('游戏结束，本局成绩是' + totalScore);
             }
         }
+        player.timer = setTimeout(function () {
+                player.initPos();
+        }, dt);
     }
 };
 
@@ -78,6 +80,10 @@ Player.prototype.update = function(dt) {
     let _this = this;
     if (_this.y < 0) {
         totalScore += 10;
+        //把totalScore更新到界面上
+        let divscore = document.getElementById('score');
+        let strongs = divscore.getElementsByTagName('strong');
+        strongs[1].innerText =  totalScore;
         _this.ismove = false;
         this.timer = setTimeout(function () {
                 _this.initPos();

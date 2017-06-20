@@ -44,16 +44,30 @@ var Engine = (function(global) {
     var startbtn = document.getElementById('start');
     startbtn.onclick = function (event) {
         isRunMain = true;
+        totalScore = 0;
         win.requestAnimationFrame(main);
         document.addEventListener('keyup', playerKeyUp);
+        //totalScore初始值为0
+        let divscore = document.getElementById('score');
+        let strongs = divscore.getElementsByTagName('strong');
+        console.log(totalScore);
+        strongs[1].innerText =  totalScore;
+        //恢复三颗生命力
+        let lifediv = document.getElementById('life');
+        let lifestrong = lifediv.getElementsByTagName('strong')[0];
+        let html =   '<strong class="flex">生命力：</strong>'+
+                    '<div class="left"><a href="javascript:;"><img src="images/Heart.png"></a></div>'+
+                    '<div class="left"><a href="javascript:;"><img src="images/Heart.png"></a></div>'+
+                    '<div class="left"><a href="javascript:;"><img src="images/Heart.png"></a></div>';
+        lifediv.innerHTML = html;
     }
 
-    //绑定开始按钮
-    var startbtn = document.getElementById('start');
-    startbtn.onclick = function (event) {
-        isRunMain = true;
-        win.requestAnimationFrame(main);
-        document.addEventListener('keyup', playerKeyUp);
+    //绑定结束按钮
+    var endbtn = document.getElementById('end');
+    endbtn.onclick = function (event) {
+        isRunMain = false;
+        document.removeEventListener('keyup', playerKeyUp);
+        alert('您已结束本局游戏，本局成绩是' + totalScore);
     }
 
     //选择角色
@@ -67,7 +81,7 @@ var Engine = (function(global) {
             this.setAttribute('class', 'active');
             var img = this.getElementsByTagName('img')[0];
             player.sprite = img.getAttribute('src');
-            player.render();
+            render();
         }
     };
 
@@ -112,12 +126,12 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        checkCollisions();
+        checkCollisions(dt);
     }
 
-    function checkCollisions() {
+    function checkCollisions(dt) {
         allEnemies.forEach(function(enemy) {
-            enemy.checkCollisions();
+            enemy.checkCollisions(dt);
         });
     }
 
