@@ -34,14 +34,17 @@ Enemy.prototype.checkCollisions = function() {
     let diffy = this.y - player.y;
 
     if (Math.abs(diffx) < 50 && Math.abs(diffy) < 41 ) {
-        player.y = PLAYER_INIT_POSY;
+        player.initPos();
     }
 };
 
 // 现在实现你自己的玩家类
 // 这个类需要一个 update() 函数， render() 函数和一个 handleInput()函数
-var Player = function(x, y, sx, sy) {
-    this.sprite = 'images/char-pink-girl.png';
+var Player = function(x, y, sx, sy, img) {
+    if (img === '' || img === undefined) {
+        img = 'images/char-pink-girl.png';
+    }
+    this.sprite = img;
     this.x = x;
     this.y = y;
     this.speedx = sx;
@@ -74,9 +77,6 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(keyCode) {
-    console.log(this.ismove);
-    console.log(this.y);
-
     if (!this.ismove && this.y < 0) {
         return;
     }
@@ -131,11 +131,6 @@ const STONE_WIDTH = 101;
 //初始化虫子的位置
 for (let i = 0; i < enemyCount; i++) {
     let enemy = new Enemy(0, 60, 101);
-    // if (i < 3) {
-        // enemy.y += i*STONE_HEIGHT;
-    // } else {
-        // enemy.y += Math.floor(i/2)*STONE_HEIGHT;
-    // }
     enemy.x += Math.floor(Math.random()*4 + 1) * STONE_WIDTH;
     enemy.speed *= (i + 1)/1.2;
     enemy.x += enemy.speed;
@@ -144,10 +139,10 @@ for (let i = 0; i < enemyCount; i++) {
 
 var player = new Player(PLAYER_INIT_POSX, PLAYER_INIT_POSY, STONE_WIDTH, STONE_HEIGHT);
 
-
 // 这段代码监听游戏玩家的键盘点击事件并且代表将按键的关键数字送到 Play.handleInput()
 // 方法里面。你不需要再更改这段代码了。
-document.addEventListener('keyup', function(e) {
+// document.addEventListener('keyup', playerKeyUp(e));
+function playerKeyUp (e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -156,4 +151,4 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-});
+}

@@ -6,12 +6,35 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="handle">
-    	<div class="absolute">
-    		<button id="start" class="">开始</button>
-    		<button id="pause" class="">暂停</button>
-    		<button id="continue" class="">继续</button>
+    <div id="handle" class="relative">
+        <div id="instructions" class="absolute">
+            <strong>游戏说明：</strong>
+            <p>键盘上的上下左右键分别控制玩家上下左右移动；玩家到达河边，便会自动回到原位。默认玩家有三颗心，表示三次生命。玩家每碰到一次虫子，就失去一颗心，三颗心都没了，则游戏结束。<p>
+        </div>
+        <div id="selectplayer" class="absolute">
+            <strong class="flex">选择角色：</strong>
+            <div><a href="javascript:;"><img src="images/char-boy.png"></a></div>
+            <div><a href="javascript:;"><img src="images/char-cat-girl.png"></a></div>
+            <div><a href="javascript:;"><img src="images/char-horn-girl.png"></a></div>
+            <div><a href="javascript:;" class="active"><img src="images/char-pink-girl.png"></a></div>
+            <div><a href="javascript:;"><img src="images/char-princess-girl.png"></a></div>
+        </div>
+    	<div id="handlebtn" class="absolute">
+            <strong class="flex">操作：</strong>
+    		<button id="start" class="btn">开始</button>
+    		<button id="pause" class="btn">暂停</button>
+    		<button id="continue" class="btn">继续</button>
+            <button id="end" class="btn">结束</button>
     	</div>
+        <div id="life" class="absolute">
+            <strong class="flex">生命力：</strong>
+            <div class="left"><a href="javascript:;"><img src="images/Heart.png"></a></div>
+            <div class="left"><a href="javascript:;"><img src="images/Heart.png"></a></div>
+            <div class="left"><a href="javascript:;"><img src="images/Heart.png"></a></div>
+        </div>
+        <div id="score" class="absolute">
+            <strong class="flex">本次成绩：</strong>
+        </div>
     </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>

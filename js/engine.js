@@ -27,17 +27,42 @@ var Engine = (function(global) {
     doc.body.appendChild(canvas);
 
     //绑定暂停按钮
-    var pausebtn = document.getElementById('#pause');
-    console.log(pausebtn);
+    var pausebtn = document.getElementById('pause');
     pausebtn.onclick = function (event) {
         isRunMain = false;
+        document.removeEventListener('keyup', playerKeyUp);
     }
 
     //绑定继续按钮
-    var continuebtn = document.getElementById('#continue');
+    var continuebtn = document.getElementById('continue');
     continuebtn.onclick = function (event) {
         isRunMain = true;
+        win.requestAnimationFrame(main);
+        document.addEventListener('keyup', playerKeyUp);
     }
+
+    //绑定开始按钮
+    var startbtn = document.getElementById('start');
+    startbtn.onclick = function (event) {
+        isRunMain = true;
+        win.requestAnimationFrame(main);
+        document.addEventListener('keyup', playerKeyUp);
+    }
+
+    //选择角色
+    var seldiv = document.getElementById('selectplayer');
+    var aeles = seldiv.getElementsByTagName('a');
+    for (var i = 0; i < aeles.length; i++) {
+        aeles[i].onclick = function () {
+            for (let j = 0; j < aeles.length; j++) {
+                aeles[j].setAttribute('class', '');
+            };
+            this.setAttribute('class', 'active');
+            var img = this.getElementsByTagName('img')[0];
+            player.sprite = img.getAttribute('src');
+            player.render();
+        }
+    };
 
     /* 这个函数是整个游戏的主入口，负责适当的调用 update / render 函数 */
     function main() {
@@ -47,7 +72,6 @@ var Engine = (function(global) {
          */
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
-            console.log(dt);
         /* 调用我们的 update / render 函数， 传递事件间隙给 update 函数因为这样
          * 可以使动画更加顺畅。
          */
@@ -164,9 +188,12 @@ var Engine = (function(global) {
         'images/enemy-bug.png',
         'images/char-boy.png',
         'images/char-pink-girl.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
-
     /* 把 canvas 上下文对象绑定在 global 全局变量上（在浏览器运行的时候就是 window
      * 对象。从而开发者就可以在他们的app.js文件里面更容易的使用它。
      */
