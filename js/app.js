@@ -55,7 +55,7 @@ Player.prototype.initPos = function () {
     this.x = PLAYER_INIT_POSX;
 }
 
-Player.prototype.update = function() {
+Player.prototype.update = function(dt) {
     //检测玩家到达河边，就恢复原位继续游戏
     clearTimeout(this.timer);
     let _this = this;
@@ -65,7 +65,7 @@ Player.prototype.update = function() {
                 _this.initPos();
                 _this.ismove = true;
                 _this.render();
-        }, 19);
+        }, dt);
     }
 };
 

@@ -19,11 +19,25 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime,
+        isRunMain = false;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+
+    //绑定暂停按钮
+    var pausebtn = document.getElementById('#pause');
+    console.log(pausebtn);
+    pausebtn.onclick = function (event) {
+        isRunMain = false;
+    }
+
+    //绑定继续按钮
+    var continuebtn = document.getElementById('#continue');
+    continuebtn.onclick = function (event) {
+        isRunMain = true;
+    }
 
     /* 这个函数是整个游戏的主入口，负责适当的调用 update / render 函数 */
     function main() {
@@ -33,6 +47,7 @@ var Engine = (function(global) {
          */
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
+            console.log(dt);
         /* 调用我们的 update / render 函数， 传递事件间隙给 update 函数因为这样
          * 可以使动画更加顺畅。
          */
@@ -45,7 +60,9 @@ var Engine = (function(global) {
         /* 在浏览准备好调用重绘下一个帧的时候，用浏览器的 requestAnimationFrame 函数
          * 来调用这个函数
          */
-        win.requestAnimationFrame(main);
+        if (isRunMain) {
+            win.requestAnimationFrame(main);
+        }
     }
 
     /* 这个函数调用一些初始化工作，特别是设置游戏必须的 lastTime 变量，这些工作只用
@@ -81,7 +98,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        player.update(dt);
     }
 
     /* 这个函数做了一些游戏的初始渲染，然后调用 renderEntities 函数。记住，这个函数

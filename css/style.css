@@ -1,3 +1,16 @@
 body {
     text-align: center;
 }
+
+.absolute {
+	position: absolute;
+}
+
+div#handle {
+	width: 360px;
+    height: 555px;
+    background-color: #f9f6f6;
+    display: inline-block;
+    margin-left: 10px;
+}
+
