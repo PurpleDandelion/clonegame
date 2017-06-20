@@ -48,6 +48,14 @@ var Engine = (function(global) {
         document.addEventListener('keyup', playerKeyUp);
     }
 
+    //绑定开始按钮
+    var startbtn = document.getElementById('start');
+    startbtn.onclick = function (event) {
+        isRunMain = true;
+        win.requestAnimationFrame(main);
+        document.addEventListener('keyup', playerKeyUp);
+    }
+
     //选择角色
     var seldiv = document.getElementById('selectplayer');
     var aeles = seldiv.getElementsByTagName('a');
