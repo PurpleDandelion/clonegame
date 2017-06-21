@@ -45,6 +45,13 @@ Enemy.prototype.checkCollisions = function(dt) {
             alert('游戏结束，本局成绩是' + totalScore);
             isStopGame = true;
             // throw('游戏终止');
+            if (totalScore > sessionStorage.historyHighScore) {
+                sessionStorage.historyHighScore = totalScore;
+            }
+            //更新历史最高成绩
+            let hscore = document.getElementById('historyhighscore');
+            let strongs = hscore.getElementsByTagName('strong');
+            strongs[1].innerText =  sessionStorage.historyHighScore;
         } else {
             player.timer = setTimeout(function () {
                     player.initPos();
@@ -162,6 +169,8 @@ var player = new Player(PLAYER_INIT_POSX, PLAYER_INIT_POSY, STONE_WIDTH, STONE_H
 var isRunMain = false,
     isStopGame = false,
     totalScore = 0;
+//历史最高成绩
+sessionStorage.historyHighScore = 0;
 
 
 // 这段代码监听游戏玩家的键盘点击事件并且代表将按键的关键数字送到 Play.handleInput()
