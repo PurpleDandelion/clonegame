@@ -37,20 +37,19 @@ Enemy.prototype.checkCollisions = function(dt) {
         //同时，失去一颗生命力
         var lifediv = document.getElementById('life');
         var hearts = lifediv.getElementsByTagName('div');
+        lifediv.removeChild(hearts[hearts.length-1]);
         if (hearts.length < 1) {
-            alert('本局结束~');
+            player.render();
             isRunMain = false;
+            document.removeEventListener('keyup', playerKeyUp);
+            alert('游戏结束，本局成绩是' + totalScore);
+            isStopGame = true;
+            // throw('游戏终止');
         } else {
-            lifediv.removeChild(hearts[hearts.length-1]);
-            if (hearts.length < 1) {
-                isRunMain = false;
-                document.removeEventListener('keyup', playerKeyUp);
-                alert('游戏结束，本局成绩是' + totalScore);
-            }
+            player.timer = setTimeout(function () {
+                    player.initPos();
+            }, dt);
         }
-        player.timer = setTimeout(function () {
-                player.initPos();
-        }, dt);
     }
 };
 
@@ -159,8 +158,9 @@ for (let i = 0; i < enemyCount; i++) {
 }
 var player = new Player(PLAYER_INIT_POSX, PLAYER_INIT_POSY, STONE_WIDTH, STONE_HEIGHT);
 
-//是否执行engine.js里面的main
+//是否执行engine.js里面的main、是否已经结束游戏以及总成绩
 var isRunMain = false,
+    isStopGame = false,
     totalScore = 0;
 
 

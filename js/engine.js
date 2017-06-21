@@ -35,9 +35,11 @@ var Engine = (function(global) {
     //绑定继续按钮
     var continuebtn = document.getElementById('continue');
     continuebtn.onclick = function (event) {
-        isRunMain = true;
-        win.requestAnimationFrame(main);
-        document.addEventListener('keyup', playerKeyUp);
+        if (!isStopGame) {
+            isRunMain = true;
+            win.requestAnimationFrame(main);
+            document.addEventListener('keyup', playerKeyUp);
+        }
     }
 
     //绑定开始按钮
@@ -45,6 +47,10 @@ var Engine = (function(global) {
     startbtn.onclick = function (event) {
         isRunMain = true;
         totalScore = 0;
+        isStopGame = false;
+        //玩家恢复初始位置
+        player.initPos();
+        //继续监听keyup事件
         win.requestAnimationFrame(main);
         document.addEventListener('keyup', playerKeyUp);
         //totalScore初始值为0
@@ -66,6 +72,7 @@ var Engine = (function(global) {
     var endbtn = document.getElementById('end');
     endbtn.onclick = function (event) {
         isRunMain = false;
+        isStopGame = true;
         document.removeEventListener('keyup', playerKeyUp);
         alert('您已结束本局游戏，本局成绩是' + totalScore);
     }
