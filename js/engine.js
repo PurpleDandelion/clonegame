@@ -56,7 +56,6 @@ var Engine = (function(global) {
         //totalScore初始值为0
         let divscore = document.getElementById('score');
         let strongs = divscore.getElementsByTagName('strong');
-        console.log(totalScore);
         strongs[1].innerText =  totalScore;
         //恢复三颗生命力
         let lifediv = document.getElementById('life');
